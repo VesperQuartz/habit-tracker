@@ -1,0 +1,32 @@
+[package]
+name = "rust-fe"
+version = "0.1.0"
+authors = ["mrlectus <lilbrown3000@gmail.com>"]
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.197", features = ["derive"] }
+
+dioxus = { version = "0.5.1", features = ["fullstack", "router"] }
+
+# Debug
+dioxus-logger = "0.5.1"
+chrono = { version = "0.4.38", features = ["serde"] }
+futures = "0.3.30"
+reqwest = { version = "0.12.5", features = ["json"] }
+serde_json = "1.0.122"
+async-recursion = "1.1.1"
+daisy_rsx = "0.1.4"
+dotenv = "0.15.0"
+dioxus-autofmt = "0.5.6"
+log = "0.4.22"
+anyhow = "1.0.86"
+
+[features]
+default = []
+server = ["dioxus/axum"]
+web = ["dioxus/web"]
+[env]
+BASE_URL = "http://localhost:3000"
