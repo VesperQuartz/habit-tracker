@@ -1,49 +1,17 @@
 #![allow(non_snake_case)]
 use crate::components::loader::Loader;
+use crate::services::login;
+use crate::types::{AuthLoginResponse, AuthRequest};
 use crate::Route;
 use dioxus::prelude::*;
-use serde::{Deserialize, Serialize};
-
-#[derive(Deserialize, Serialize, Debug)]
-struct LoginRequest {
-  username: String,
-  password: String,
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-struct LoginResponse {
-  message: String,
-  user: User,
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-struct User {
-  token: String,
-  username: String,
-  id: String,
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-struct Error {
-  message: Option<String>,
-}
-
-async fn login(payload: LoginRequest) -> anyhow::Result<LoginResponse> {
-  let base_url = "http://127.0.0.1:3000";
-  let url = format!("{}/auth/login", base_url);
-  let response = reqwest::Client::new()
-    .post(&url)
-    .json(&payload)
-    .send()
-    .await?;
-
-  let login_response = response.json::<LoginResponse>().await?;
-  Ok(login_response)
-}
+use dioxus_logger::tracing::info;
+use gloo::storage::LocalStorage;
+use gloo_storage::Storage;
 
 pub fn Login() -> Element {
   let router = use_navigator();
   let mut username = use_signal(|| "".to_string());
+  let mut errors = use_signal(|| "".to_string());
   let mut password = use_signal(|| "".to_string());
   let mut loading = use_signal(|| false);
   rsx! {
@@ -58,20 +26,37 @@ pub fn Login() -> Element {
             onsubmit: move |_event| {
                 spawn(async move {
                     loading.set(true);
-                    let payload = LoginRequest {
+                    let payload = AuthRequest {
                         username: username(),
                         password: password(),
                     };
                     let response = login(payload).await;
                     match response {
                         Ok(data) => {
-                            loading.set(false);
-                            println!("Login response {:?}", data);
-                            router.push(Route::Home {});
+                          info!("Data: {data:?}");
+                          match data {
+                            AuthLoginResponse::Ok(data) => {
+                              let user = serde_json::to_string(&data.user);
+                              if let Ok(user) = user {
+                                info!(user);
+                                LocalStorage::set("user", user).ok();
+                                loading.set(false);
+                                router.push(Route::Home {});
+                              }
+                            },
+                            AuthLoginResponse::Err(data) => {
+                              let error = serde_json::to_string(&data.message);
+                              if let Ok(error) = error {
+                                info!(error);
+                                errors.set(error);
+                                loading.set(false);
+                              }
+                            },
+                          }
                         }
                         Err(err) => {
+                          info!("Error: {err:?}");
                             loading.set(false);
-                            println!("Login response {:?}", err);
                         }
                     }
                 });
@@ -107,6 +92,9 @@ pub fn Login() -> Element {
           }
         }
         div {
+          if errors() != "".to_string() {
+            p { class: "text-red-500  flex justify-center items-center my-1", "{errors}" }
+          }
           p { class: "text-center text-sm",
             "Don't have an account?"
             Link { class: "text-blue-400 mx-1", to: Route::Register {}, "Register" }

@@ -1,8 +1,11 @@
 #![allow(non_snake_case)]
 pub mod components;
 pub mod routes;
+pub mod services;
+pub mod types;
 use components::navbar::NavBar;
 use dioxus::{launch, prelude::*};
+use dioxus_logger::tracing::Level;
 use routes::login::Login;
 use routes::signup::Register;
 
@@ -31,6 +34,7 @@ fn NotFound(segments: Vec<String>) -> Element {
 }
 
 fn main() {
+  dioxus_logger::init(Level::INFO).expect("logger failed to init");
   launch(|| {
     rsx! {
       Router::<Route> {}

@@ -1,37 +1,14 @@
 #![allow(non_snake_case)]
 use crate::components::loader::Loader;
+use crate::services::signup;
+use crate::types::{AuthRegResponse, AuthRequest};
 use crate::Route;
 use dioxus::prelude::*;
-use serde::{Deserialize, Serialize};
-
-#[derive(Deserialize, Serialize, Debug)]
-struct RegRequest {
-  username: String,
-  password: String,
-}
-
-#[derive(Deserialize, Serialize, Debug)]
-struct RegResponse {
-  id: String,
-  username: String,
-}
-
-async fn signup(payload: RegRequest) -> anyhow::Result<RegResponse> {
-  let base_url = "http://127.0.0.1:3000";
-  let url = format!("{}/auth/signup", base_url);
-  let response = reqwest::Client::new()
-    .post(&url)
-    .json(&payload)
-    .send()
-    .await?;
-
-  let login_response = response.json::<RegResponse>().await?;
-  Ok(login_response)
-}
 
 pub fn Register() -> Element {
   let router = use_navigator();
   let mut username = use_signal(|| "".to_string());
+  let mut errors = use_signal(|| "".to_string());
   let mut password = use_signal(|| "".to_string());
   let mut loading = use_signal(|| false);
   rsx! {
@@ -46,16 +23,27 @@ pub fn Register() -> Element {
             onsubmit: move |_event| {
                 spawn(async move {
                     loading.set(true);
-                    let payload = RegRequest {
+                    let payload = AuthRequest {
                         username: username(),
                         password: password(),
                     };
                     let response = signup(payload).await;
                     match response {
                         Ok(data) => {
-                            loading.set(false);
-                            println!("Login response {:?}", data);
-                            router.push(Route::Login {});
+                          match data {
+                            AuthRegResponse::Ok(_) => {
+                              loading.set(false);
+                              router.push(Route::Login {});
+                            }
+                            AuthRegResponse::Err(err) => {
+                              let error = serde_json::to_string(&err.message);
+                              if let Ok(error) = error {
+                                 errors.set(error);
+                                 loading.set(false);
+                              }
+                              println!("Login response {:?}", err);
+                            }
+                          }
                         }
                         Err(err) => {
                             loading.set(false);
@@ -95,6 +83,9 @@ pub fn Register() -> Element {
           }
         }
         div {
+          if errors() != "".to_string() {
+            p { class: "text-red-500  flex justify-center items-center my-1", "{errors}" }
+          }
           p { class: "text-center text-sm",
             "Already have an account?"
             Link {class: "text-blue-400 mx-1", to: Route::Login {}, "Login" }
