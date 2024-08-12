@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+pub mod assets;
 pub mod components;
 pub mod routes;
 pub mod services;
@@ -25,12 +26,16 @@ enum Route {
 }
 
 fn Home() -> Element {
-  rsx!(main {})
+  rsx!(
+    main {}
+  )
 }
 
 #[component]
 fn NotFound(segments: Vec<String>) -> Element {
-  rsx!(div {})
+  rsx!(
+    div {}
+  )
 }
 
 fn main() {
