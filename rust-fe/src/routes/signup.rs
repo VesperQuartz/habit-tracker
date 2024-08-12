@@ -16,7 +16,7 @@ pub fn Register() -> Element {
     main {
       div { class: "flex justify-evenly gap-10 items-center",
         div {
-          div { class: "flex gap-1",
+          div { class: "md:flex md:gap-1 hidden",
             div { class: "flex flex-col gap-4 items-center",
               img { class: "w-[27.6rem] h-[25rem]", src: "{V1}" }
               img { class: "w-[12.5rem] h-[12rem]", src: "{V1}" }
@@ -37,7 +37,7 @@ pub fn Register() -> Element {
           div { class: "flex flex-col gap-8",
             div { class: "flex flex-col gap-1",
               p { class: "text-[#1A3636] font-bold text-[3rem]", "Hi, Welcome Back" }
-              p { class: "text-[#333333] text-[2rem] font-light w-fit w-[33rem]",
+              p { class: "text-[#333333] text-[2rem] font-light w-fit md:w-[33rem]",
                 "We are excited to have you here, Setup your account in few minutes and get started."
               }
             }

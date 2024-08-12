@@ -18,7 +18,7 @@ pub fn Login() -> Element {
     main {
       div { class: "flex justify-evenly gap-10 items-center",
         div {
-          div { class: "flex gap-1",
+          div { class: "md:flex md:gap-1 hidden",
             div { class: "flex flex-col gap-4 items-center",
               img { class: "w-[27.6rem] h-[25rem]", src: "{V1}" }
               img { class: "w-[12.5rem] h-[12rem]", src: "{V1}" }
