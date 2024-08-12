@@ -64,13 +64,11 @@ pub fn Register() -> Element {
                                             errors.set(error);
                                             loading.set(false);
                                         }
-                                        println!("Login response {:?}", err);
                                     }
                                 }
                             }
-                            Err(err) => {
+                            Err(_) => {
                                 loading.set(false);
-                                println!("Login response {:?}", err);
                             }
                         }
                     });

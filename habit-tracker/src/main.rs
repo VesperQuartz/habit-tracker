@@ -6,9 +6,10 @@ pub mod services;
 pub mod types;
 use components::navbar::NavBar;
 use dioxus::{launch, prelude::*};
-use dioxus_logger::tracing::Level;
+use dioxus_logger::tracing::{info, Level};
 use routes::login::Login;
 use routes::signup::Register;
+use services::is_logged_in;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 #[rustfmt::skip]
@@ -25,17 +26,32 @@ enum Route {
   NotFound { segments: Vec<String> },
 }
 
+#[component]
 fn Home() -> Element {
-  rsx!(
-    main {}
-  )
+  let router = use_navigator();
+  let mut logged = use_signal(|| is_logged_in());
+  info!("logged in: {:?}", logged);
+  use_effect(move || {
+    logged.set(is_logged_in());
+  });
+  match logged() {
+    true => {
+      rsx! {
+        main { "Logged in" }
+      }
+    }
+    false => {
+      router.push(Route::Login {});
+      rsx! {
+        p { "Redirecting to login" }
+      }
+    }
+  }
 }
 
 #[component]
 fn NotFound(segments: Vec<String>) -> Element {
-  rsx!(
-    div {}
-  )
+  rsx!(div {})
 }
 
 fn main() {

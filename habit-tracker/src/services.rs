@@ -1,4 +1,7 @@
-use crate::types::{AuthLoginResponse, AuthRegResponse, AuthRequest};
+use gloo_storage::{LocalStorage, Storage};
+
+use crate::types::{AuthLoginResponse, AuthRegResponse, AuthRequest, User};
+use dioxus_logger::tracing::info;
 
 const BASE_URL: &str = "http://127.0.0.1:3000";
 
@@ -22,4 +25,15 @@ pub async fn login(payload: AuthRequest) -> anyhow::Result<AuthLoginResponse> {
     .await?;
   let login_response = response.json::<AuthLoginResponse>().await?;
   Ok(login_response)
+}
+
+pub fn is_logged_in() -> bool {
+  let user = LocalStorage::get("user")
+    .ok()
+    .unwrap_or_else(|| "".to_string());
+  info!("user-log: {:?}", user);
+  if user == "".to_string() {
+    return false;
+  }
+  true
 }

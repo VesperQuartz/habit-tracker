@@ -1,5 +1,5 @@
 [package]
-name = "rust-fe"
+name = "habit-tracker"
 version = "0.1.0"
 authors = ["mrlectus <lilbrown3000@gmail.com>"]
 edition = "2021"
@@ -7,21 +7,14 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+dioxus = { version = "0.5", features = ["web", "router"] }
 serde = { version = "1.0.197", features = ["derive"] }
-
-dioxus = { version = "0.5.1", features = ["fullstack", "router"] }
-
-# Debug
-dioxus-logger = "0.5.1"
 chrono = { version = "0.4.38", features = ["serde"] }
 futures = "0.3.30"
 reqwest = { version = "0.12.5", features = ["json"] }
 serde_json = "1.0.122"
 async-recursion = "1.1.1"
-daisy_rsx = "0.1.4"
-dotenv = "0.15.0"
-dioxus-autofmt = "0.5.6"
-log = "0.4.22"
 anyhow = "1.0.86"
 dioxus-sdk = { version = "0.5.0", features = ["storage"] }
 dioxus-helmet = "0.2.4"
@@ -29,9 +22,6 @@ gloo-storage = "0.3.0"
 gloo = "0.11.0"
 manganis = "0.2.2"
 
-[features]
-default = []
-server = ["dioxus/axum"]
-web = ["dioxus/web"]
-[env]
-BASE_URL = "http://localhost:3000"
+
+# Debug
+dioxus-logger = "0.5.1"
