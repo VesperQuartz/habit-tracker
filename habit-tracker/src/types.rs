@@ -32,9 +32,9 @@ pub struct LoginResponse {
 
 #[derive(Deserialize, Serialize, Debug)]
 pub struct User {
-  token: String,
-  username: String,
-  id: String,
+  pub token: String,
+  pub username: String,
+  pub id: String,
 }
 
 #[derive(Deserialize, Serialize, Debug)]

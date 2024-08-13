@@ -18,15 +18,25 @@ pub fn Register() -> Element {
         div {
           div { class: "md:flex md:gap-1 hidden",
             div { class: "flex flex-col gap-4 items-center",
-              img { class: "w-[27.6rem] h-[25rem]", src: "{V1}" }
-              img { class: "w-[12.5rem] h-[12rem]", src: "{V1}" }
+              img {
+                loading: "lazy",
+                class: "w-[27.6rem] h-[25rem]",
+                src: "{V1}"
+              }
+              img {
+                loading: "lazy",
+                class: "w-[12.5rem] h-[12rem]",
+                src: "{V1}"
+              }
             }
             div { class: "flex flex-col gap-[7rem] z-10",
               img {
+                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
                 src: "{V2}"
               }
               img {
+                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
                 src: "{V3}"
               }
@@ -106,10 +116,6 @@ pub fn Register() -> Element {
                     } else {
                       "Sign Up"
                       div { class: "icon-arrow-right" }
-                    }
-                    img {
-                      class: "text-white",
-                      src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1hcnJvdy1yaWdodCI+PHBhdGggZD0iTTUgMTJoMTQiLz48cGF0aCBkPSJtMTIgNSA3IDctNyA3Ii8+PC9zdmc+"
                     }
                   }
                   p {

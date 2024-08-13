@@ -7,8 +7,8 @@ pub mod types;
 use components::navbar::NavBar;
 use dioxus::{launch, prelude::*};
 use dioxus_logger::tracing::{info, Level};
-use routes::login::Login;
 use routes::signup::Register;
+use routes::{dashboard::Dashboard, login::Login};
 use services::is_logged_in;
 
 #[derive(Routable, PartialEq, Clone, Debug)]
@@ -29,7 +29,7 @@ enum Route {
 #[component]
 fn Home() -> Element {
   let router = use_navigator();
-  let mut logged = use_signal(|| is_logged_in());
+  let mut logged = use_signal(is_logged_in);
   info!("logged in: {:?}", logged);
   use_effect(move || {
     logged.set(is_logged_in());
@@ -37,7 +37,7 @@ fn Home() -> Element {
   match logged() {
     true => {
       rsx! {
-        main { "Logged in" }
+        Dashboard {}
       }
     }
     false => {

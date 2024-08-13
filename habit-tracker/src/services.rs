@@ -37,3 +37,12 @@ pub fn is_logged_in() -> bool {
   }
   true
 }
+
+pub fn get_user() -> Option<User> {
+  let user: Option<String> = LocalStorage::get("user").ok();
+  if let Some(user) = user {
+    let user: User = serde_json::from_str(&user).unwrap();
+    return Some(user);
+  }
+  None
+}
