@@ -14,7 +14,7 @@ pub fn Dashboard() -> Element {
             count: 10,
             description: "You have 2 habit marked done!",
             icon: rsx! {
-                img { src: "{DAILY}" }
+                img { src: "{DAILY}", loading: "lazy" }
             }
           }
           HabitCard {
@@ -22,7 +22,7 @@ pub fn Dashboard() -> Element {
             count: 7,
             description: "You have 2 habit marked done!",
             icon: rsx! {
-                img { src: "{WEEKLY}" }
+                img { src: "{WEEKLY}", loading: "lazy" }
             }
           }
         }

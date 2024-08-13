@@ -129,7 +129,10 @@ pub fn Login() -> Element {
                   }
                   if !errors().is_empty() && errors().len() < 50 {
                     p { class: "text-red-500  flex justify-center items-center my-1",
-                      img { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlMDFiMjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaXJjbGUtb2ZmIj48cGF0aCBkPSJtMiAyIDIwIDIwIi8+PHBhdGggZD0iTTguMzUgMi42OUExMCAxMCAwIDAgMSAyMS4zIDE1LjY1Ii8+PHBhdGggZD0iTTE5LjA4IDE5LjA4QTEwIDEwIDAgMSAxIDQuOTIgNC45MiIvPjwvc3ZnPg==" }
+                      img {
+                        src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlMDFiMjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaXJjbGUtb2ZmIj48cGF0aCBkPSJtMiAyIDIwIDIwIi8+PHBhdGggZD0iTTguMzUgMi42OUExMCAxMCAwIDAgMSAyMS4zIDE1LjY1Ii8+PHBhdGggZD0iTTE5LjA4IDE5LjA4QTEwIDEwIDAgMSAxIDQuOTIgNC45MiIvPjwvc3ZnPg==",
+                        loading: "lazy"
+                      }
                       " {errors}"
                     }
                   }
