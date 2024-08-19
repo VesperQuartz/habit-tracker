@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use crate::assets::{V1, V2, V3};
+use crate::asset::{L1, L2, L3, L4};
 use crate::components::loader::Loader;
 use crate::services::login;
 use crate::types::{AuthLoginResponse, AuthRequest};
@@ -8,6 +8,7 @@ use dioxus::prelude::*;
 use dioxus_logger::tracing::info;
 use gloo::storage::LocalStorage;
 use gloo_storage::Storage;
+
 pub fn Login() -> Element {
   let router = use_navigator();
   let mut username = use_signal(|| "".to_string());
@@ -15,32 +16,27 @@ pub fn Login() -> Element {
   let mut loading = use_signal(|| false);
   let mut errors = use_signal(|| "".to_string().replace("\"", ""));
   rsx! {
-    main {
-      div { class: "flex justify-evenly gap-10 items-center",
+    Title { "login" }
+    main { class: "min-h-screen flex justify-center items-center",
+      div { class: "flex justify-evenly gap-28 items-center",
         div {
           div { class: "md:flex md:gap-1 hidden",
             div { class: "flex flex-col gap-4 items-center",
               img {
-                loading: "lazy",
                 class: "w-[27.6rem] h-[25rem]",
-                src: "{V1}"
+                src: "{L1}",
+                alt: "l1",
               }
-              img {
-                loading: "lazy",
-                class: "w-[12.5rem] h-[12rem]",
-                src: "{V1}"
-              }
+              img { class: "w-[12.5rem] h-[12rem]", src: "{L2}" }
             }
             div { class: "flex flex-col gap-[7rem] z-10",
               img {
-                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
-                src: "{V2}"
+                src: "{L3}",
               }
               img {
-                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
-                src: "{V3}"
+                src: "{L4}",
               }
             }
           }
@@ -99,7 +95,7 @@ pub fn Login() -> Element {
                     placeholder: "John Doe",
                     class: "border-2 p-2 border-[#40534C] h-[3.3rem] w-[23rem] rounded-md",
                     r#type: "text",
-                    oninput: move |event| { username.set(event.value()) }
+                    oninput: move |event| { username.set(event.value()) },
                   }
                 }
                 div { class: "flex flex-col",
@@ -110,7 +106,7 @@ pub fn Login() -> Element {
                     placeholder: "********",
                     class: "border-2 p-2 border-[#40534C] h-[3.3rem] w-[23rem] rounded-md",
                     oninput: move |event| { password.set(event.value()) },
-                    r#type: "password"
+                    r#type: "password",
                   }
                   span { class: "text-[#40534C] text-[0.8rem]", "Forgot Password?" }
                 }
@@ -125,14 +121,15 @@ pub fn Login() -> Element {
                   }
                   p {
                     "Dont have an account? "
-                    Link { class: "text-[#1A3636] text-xl mx-1", to: Route::Register {}, "Sign up" }
+                    Link {
+                      class: "text-[#1A3636] text-xl mx-1",
+                      to: Route::Register {},
+                      "Sign up"
+                    }
                   }
                   if !errors().is_empty() && errors().len() < 50 {
                     p { class: "text-red-500  flex justify-center items-center my-1",
-                      img {
-                        src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlMDFiMjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaXJjbGUtb2ZmIj48cGF0aCBkPSJtMiAyIDIwIDIwIi8+PHBhdGggZD0iTTguMzUgMi42OUExMCAxMCAwIDAgMSAyMS4zIDE1LjY1Ii8+PHBhdGggZD0iTTE5LjA4IDE5LjA4QTEwIDEwIDAgMSAxIDQuOTIgNC45MiIvPjwvc3ZnPg==",
-                        loading: "lazy"
-                      }
+                      img { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlMDFiMjQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jaXJjbGUtb2ZmIj48cGF0aCBkPSJtMiAyIDIwIDIwIi8+PHBhdGggZD0iTTguMzUgMi42OUExMCAxMCAwIDAgMSAyMS4zIDE1LjY1Ii8+PHBhdGggZD0iTTE5LjA4IDE5LjA4QTEwIDEwIDAgMSAxIDQuOTIgNC45MiIvPjwvc3ZnPg==" }
                       " {errors}"
                     }
                   }

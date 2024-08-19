@@ -4,7 +4,7 @@ import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 const log: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
   fastify.route({
     method: "POST",
-    url: "/id",
+    url: "/",
     schema: {
       tags: ["Logs"],
       body: z.object({

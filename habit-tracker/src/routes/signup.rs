@@ -1,5 +1,5 @@
 #![allow(non_snake_case)]
-use crate::assets::{V1, V2, V3};
+use crate::asset::{S1, S2, S3, S4};
 use crate::components::loader::Loader;
 use crate::services::signup;
 use crate::types::{AuthRegResponse, AuthRequest};
@@ -13,32 +13,23 @@ pub fn Register() -> Element {
   let mut loading = use_signal(|| false);
   let mut errors = use_signal(|| "".to_string().replace("\"", ""));
   rsx! {
-    main {
-      div { class: "flex justify-evenly gap-10 items-center",
+    Title { "signup" }
+    main { class: "min-h-screen flex justify-center items-center",
+      div { class: "flex justify-evenly gap-28 items-center",
         div {
           div { class: "md:flex md:gap-1 hidden",
             div { class: "flex flex-col gap-4 items-center",
-              img {
-                loading: "lazy",
-                class: "w-[27.6rem] h-[25rem]",
-                src: "{V1}"
-              }
-              img {
-                loading: "lazy",
-                class: "w-[12.5rem] h-[12rem]",
-                src: "{V1}"
-              }
+              img { class: "w-[27.6rem] h-[25rem]", src: "{S1}" }
+              img { class: "w-[12.5rem] h-[12rem]", src: "{S2}" }
             }
             div { class: "flex flex-col gap-[7rem] z-10",
               img {
-                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
-                src: "{V2}"
+                src: "{S3}",
               }
               img {
-                loading: "lazy",
                 class: "w-[12.9rem] h-[13rem] z-10",
-                src: "{V3}"
+                src: "{S4}",
               }
             }
           }
@@ -92,7 +83,7 @@ pub fn Register() -> Element {
                     placeholder: "John Doe",
                     class: "border-2 p-2 border-[#40534C] h-[3.3rem] w-[23rem] rounded-md",
                     r#type: "text",
-                    oninput: move |event| { username.set(event.value()) }
+                    oninput: move |event| { username.set(event.value()) },
                   }
                 }
                 div { class: "flex flex-col",
@@ -103,7 +94,7 @@ pub fn Register() -> Element {
                     placeholder: "********",
                     class: "border-2 p-2 border-[#40534C] h-[3.3rem] w-[23rem] rounded-md",
                     oninput: move |event| { password.set(event.value()) },
-                    r#type: "password"
+                    r#type: "password",
                   }
                   span { class: "text-[#40534C] text-[0.8rem]",
                     "A strong password is at least 8 characters long"
@@ -120,7 +111,11 @@ pub fn Register() -> Element {
                   }
                   p {
                     "Have an account?"
-                    Link { class: "text-[#1A3636] text-xl mx-1", to: Route::Login {}, "Sign in" }
+                    Link {
+                      class: "text-[#1A3636] text-xl mx-1",
+                      to: Route::Login {},
+                      "Sign in"
+                    }
                   }
                   if !errors().is_empty() && errors().len() < 50 {
                     p { class: "text-red-500  flex justify-center items-center my-1",

@@ -1,11 +1,13 @@
 #![allow(non_snake_case)]
-use crate::assets::{DAILY, WEEKLY};
+use crate::asset::{DAILY, WEEKLY};
 use crate::components::{habit_card::HabitCard, today::ToDate};
 use dioxus::prelude::*;
 
+#[component]
 pub fn Dashboard() -> Element {
   rsx! {
-    main {
+    Title { "dashboard" }
+    main { class: "flex grow flex-1 justify-center",
       div {
         ToDate {}
         div { class: "flex flex-col sm:flex-row justify-center items-center my-10 gap-5",
@@ -14,16 +16,16 @@ pub fn Dashboard() -> Element {
             count: 10,
             description: "You have 2 habit marked done!",
             icon: rsx! {
-                img { src: "{DAILY}", loading: "lazy" }
-            }
+              img { src: "{DAILY}" }
+            },
           }
           HabitCard {
             title: "Weekly",
             count: 7,
             description: "You have 2 habit marked done!",
             icon: rsx! {
-                img { src: "{WEEKLY}", loading: "lazy" }
-            }
+              img { src: "{WEEKLY}" }
+            },
           }
         }
       }

@@ -1,20 +1,21 @@
 #![allow(non_snake_case)]
-pub mod assets;
+pub mod asset;
 pub mod components;
 pub mod routes;
 pub mod services;
 pub mod types;
-use components::navbar::NavBar;
-use dioxus::{launch, prelude::*};
+use components::layout::RootLayout;
+use dioxus::prelude::*;
 use dioxus_logger::tracing::{info, Level};
 use routes::signup::Register;
 use routes::{dashboard::Dashboard, login::Login};
 use services::is_logged_in;
+const STYLE: &str = asset!("./assets/tailwind.css");
 
 #[derive(Routable, PartialEq, Clone, Debug)]
 #[rustfmt::skip]
 enum Route {
-	#[layout(NavBar)]
+	#[layout(RootLayout)]
 		#[route("/")]
 		Home {},
 	#[end_layout]
@@ -58,6 +59,7 @@ fn main() {
   dioxus_logger::init(Level::INFO).expect("logger failed to init");
   launch(|| {
     rsx! {
+      head::Link { rel: "stylesheet", href: STYLE }
       Router::<Route> {}
     }
   });

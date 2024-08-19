@@ -17,7 +17,7 @@ pub fn ToDate() -> Element {
   let weekday = current_date.format("%a").to_string();
   info!("formatted_date: {:?}", current_date.format("%a"));
   rsx! {
-    div { class: "flex flex-col gap-4 items-center",
+    div { class: "flex flex-col gap-4 items-center justify-center w-full",
       p { class: "text-[#1A3636] text-[1.5rem] font-bold", "{formatted_date}" }
       div { class: "flex space-x-[2rem] text-[1.5rem]",
         for date in days_to_show.iter() {
