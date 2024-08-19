@@ -1,6 +1,3 @@
-use dioxus::prelude::*;
-use svg_attributes::class;
-
 use crate::{
   components::{
     habit_form::HabitForm,
@@ -8,11 +5,13 @@ use crate::{
   },
   services::cookie_parser,
 };
+use dioxus::prelude::*;
 
 pub fn NavBar() -> Element {
   let user = cookie_parser();
   let mut show_dialog = use_context::<Signal<FormDialog>>();
   let mut show_side = use_context::<Signal<ShowSide>>();
+
   rsx! {
     div {
       div {

@@ -64,12 +64,12 @@ pub enum Frequency {
 #[derive(Deserialize, Serialize, Debug)]
 pub struct Habit {
   #[serde(rename = "userId")]
-  user_id: String,
-  name: String,
+  pub user_id: String,
+  pub name: String,
   #[serde(rename = "startDate")]
-  start_date: DateTime<Utc>,
-  frequency: Frequency,
-  description: String,
+  pub start_date: String,
+  pub frequency: String,
+  pub description: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
