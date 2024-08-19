@@ -34,7 +34,6 @@ pub fn is_logged_in() -> bool {
   let user = LocalStorage::get("user")
     .ok()
     .unwrap_or_else(|| "".to_string());
-  info!("user-log: {:?}", user);
   if user == "".to_string() {
     return false;
   }

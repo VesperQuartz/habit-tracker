@@ -25,17 +25,3 @@ reload_html = true
 
 # which files or dirs will be watcher monitoring
 watch_path = ["src", "assets"]
-
-
-[web.resource]
-style = [
-  "./assets/tailwind.css",
-  "https://fonts.googleapis.com/css?family=Roboto:300,400,500",
-  "https://fonts.googleapis.com/css?family=Material+Icons&display=block",
-]
-
-[web.resource.dev]
-
-# Javascript code file
-# serve: [dev-server] only
-script = []

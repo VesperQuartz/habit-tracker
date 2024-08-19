@@ -1,6 +1,7 @@
 pub mod avatar;
 pub mod button;
 pub mod habit_card;
+pub mod habit_form;
 pub mod layout;
 pub mod loader;
 pub mod navbar;

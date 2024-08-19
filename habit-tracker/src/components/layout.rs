@@ -8,8 +8,12 @@ use crate::{
 #[derive(Clone, Copy)]
 pub struct ShowSide(pub bool);
 
+#[derive(Clone, Copy)]
+pub struct FormDialog(pub bool);
+
 pub fn RootLayout() -> Element {
   use_context_provider(|| Signal::new(ShowSide(false)));
+  use_context_provider(|| Signal::new(FormDialog(false)));
   let show_side = use_context::<Signal<ShowSide>>();
   rsx! {
     div { class: "flex",
