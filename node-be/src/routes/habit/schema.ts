@@ -13,7 +13,7 @@ export const HabitResSchema = z.object({
 });
 
 export const HabitReqSchema = z.object({
-  name: z.string(),
+  name: z.string().min(4, { message: "Habit cannot be empty" }),
   description: z.string().optional(),
   startDate: z.coerce.date(),
   frequency: z.enum(["Daily", "Weekly"]),
