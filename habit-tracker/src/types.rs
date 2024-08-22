@@ -7,6 +7,11 @@ pub struct Title {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
+pub struct Count {
+  pub count: i32,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
 pub struct Message {
   pub message: String,
 }
@@ -41,7 +46,7 @@ pub struct LoginResponse {
   pub user: UserLoginRes,
 }
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize, Debug, Clone)]
 pub struct UserLoginRes {
   pub token: String,
   pub username: String,
@@ -86,7 +91,19 @@ pub struct HabitTiny {
   created_at: DateTime<Utc>,
   #[serde(rename = "updatedAt")]
   updated_at: DateTime<Utc>,
-  message: String,
+  message: Option<String>,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
+pub struct HabitTask {
+  pub habit: HabitTiny,
+  pub id: String,
+  #[serde(rename = "habitId")]
+  pub habit_id: String,
+  pub date: DateTime<Utc>,
+  pub status: String,
+  #[serde(rename = "createdAt")]
+  pub created_at: DateTime<Utc>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

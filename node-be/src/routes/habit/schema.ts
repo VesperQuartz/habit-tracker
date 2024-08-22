@@ -28,6 +28,12 @@ export const HabitLogSchema = z.object({
   createdAt: z.date(),
 });
 
+export const HabitLogWDSchema = z
+  .object({
+    habit: HabitResSchema,
+  })
+  .merge(HabitLogSchema);
+
 export const ReminderSchema = z.object({
   id: z.string(),
   habitId: z.string(),

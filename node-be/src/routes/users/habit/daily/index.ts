@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
+import { HabitResSchema } from "../../../habit/schema";
 
 const userHabit: FastifyPluginAsyncZod = async (
   fastify,
@@ -15,7 +16,7 @@ const userHabit: FastifyPluginAsyncZod = async (
       }),
       response: {
         200: z.object({
-          message: z.string(),
+          habits: z.array(HabitResSchema),
         }),
       },
     },
@@ -34,14 +35,49 @@ const userHabit: FastifyPluginAsyncZod = async (
                 },
               },
             },
-            _count: true,
           },
         });
-        fastify.log.info(`habit: ${JSON.stringify(habit)}`);
+        if (habit) {
+          return habit;
+        } else {
+          throw new Error("User does not have any habits");
+        }
       } catch (error) {
         console.error(error);
       }
-      return { message: "PONG!" };
+    },
+  });
+  fastify.route({
+    method: "GET",
+    url: "/:id/count",
+    schema: {
+      tags: ["User"],
+      params: z.object({
+        id: z.string(),
+      }),
+      response: {
+        200: z.object({
+          count: z.number(),
+        }),
+      },
+    },
+    handler: async (req) => {
+      const { id } = req.params;
+      try {
+        const habit = await fastify.prisma.habit.count({
+          where: {
+            userId: id,
+            frequency: "Daily",
+          },
+        });
+        if (habit) {
+          return { count: habit };
+        } else {
+          throw new Error("User does not have any habits");
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 };

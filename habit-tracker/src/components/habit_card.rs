@@ -1,10 +1,11 @@
 use dioxus::prelude::*;
+use dioxus_logger::tracing::info;
 
-#[derive(PartialEq, Clone, Props)]
+#[derive(PartialEq, Clone, Props, Debug)]
 pub struct CardProps {
   title: String,
   count: i32,
-  description: String,
+  taskCount: usize,
   icon: Element,
   onclick: Option<EventHandler<MouseEvent>>,
 }
@@ -15,10 +16,10 @@ pub fn HabitCard(props: CardProps) -> Element {
       div { class: "flex flex-col gap-2",
         p { class: "text-[1.5rem]", "{props.title}" }
         p { class: "text-[#333333] font-bold text-[1.25rem]",
-          span { class: "text-[#D6BD98]", "{props.count}" }
+          span { class: "text-[#D6BD98]", "{props.taskCount}/{props.count}" }
           " Done"
         }
-        p { class: "text-[#333333]", "{props.description}" }
+        p { class: "text-[#333333]", "You have {props.taskCount} habit marked done" }
         button {
           class: "bg-[#1A3636] text-white rounded drop-shadow-md p-1 flex items-center gap-2 w-fit",
           onclick: move |event| props.onclick.unwrap().call(event),

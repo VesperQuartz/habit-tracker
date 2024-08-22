@@ -1,12 +1,12 @@
 use gloo_storage::{LocalStorage, Storage};
 
 use crate::types::{
-  AuthLoginResponse, AuthRegResponse, AuthRequest, Habit, HabitResponse, HabitTiny, Logs, Message,
-  Title, User, UserLoginRes,
+  AuthLoginResponse, AuthRegResponse, AuthRequest, Count, Habit, HabitResponse, HabitTask,
+  HabitTiny, Logs, Message, Title, User, UserLoginRes,
 };
-use dioxus_logger::tracing::info;
 
 const BASE_URL: &str = "https://api.habittracker.ignorelist.com";
+// const BASE_URL: &str = "http://localhost:4000";
 
 pub async fn signup(payload: AuthRequest) -> anyhow::Result<AuthRegResponse> {
   let url = format!("{}/auth/signup", BASE_URL);
@@ -98,6 +98,62 @@ pub async fn get_user(id: String) -> anyhow::Result<User> {
   match users.status() {
     reqwest::StatusCode::OK => {
       let response = users.json::<User>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
+}
+
+pub async fn get_daily_count(id: String) -> anyhow::Result<Count> {
+  let url = format!("{}/users/habit/daily/{}/count", BASE_URL, id);
+  let count = reqwest::Client::new().get(&url).send().await?;
+  match count.status() {
+    reqwest::StatusCode::OK => {
+      let response = count.json::<Count>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
+}
+
+pub async fn get_weekly_count(id: String) -> anyhow::Result<Count> {
+  let url = format!("{}/users/habit/weekly/{}/count", BASE_URL, id);
+  let count = reqwest::Client::new().get(&url).send().await?;
+  match count.status() {
+    reqwest::StatusCode::OK => {
+      let response = count.json::<Count>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
+}
+
+pub async fn get_daily_task(id: String) -> anyhow::Result<Vec<HabitTask>> {
+  let url = format!("{}/habit/log/{}/daily", BASE_URL, id);
+  let task = reqwest::Client::new().get(&url).send().await?;
+  match task.status() {
+    reqwest::StatusCode::OK => {
+      let response = task.json::<Vec<HabitTask>>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
+}
+
+pub async fn get_weekly_task(id: String) -> anyhow::Result<Vec<HabitTask>> {
+  let task = format!("{}/habit/log/{}/weekly", BASE_URL, id);
+  let count = reqwest::Client::new().get(&task).send().await?;
+  match count.status() {
+    reqwest::StatusCode::OK => {
+      let response = count.json::<Vec<HabitTask>>().await?;
       Ok(response)
     }
     _ => {

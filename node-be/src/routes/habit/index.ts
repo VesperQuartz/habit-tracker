@@ -68,6 +68,7 @@ const habit: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
       }
     },
   });
+
   fastify.route({
     method: "PATCH",
     url: "/:id",

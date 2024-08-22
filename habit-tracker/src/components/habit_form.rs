@@ -28,8 +28,8 @@ pub fn HabitForm() -> Element {
       }
       form {
         onsubmit: move |_| {
-            eval(r#"showDXToast("Habit", "Habit is Added Sucessfully", "info", 5000);"#);
             let id = user.id.clone();
+            info!("id: {:?}", id);
             spawn(async move {
                 loading.set(true);
                 let payload = Habit {

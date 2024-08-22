@@ -1,16 +1,19 @@
+use dioxus::prelude::*;
+
 use crate::{
   components::{
     habit_form::HabitForm,
     layout::{FormDialog, ShowSide},
   },
   services::cookie_parser,
+  Route,
 };
-use dioxus::prelude::*;
 
 pub fn NavBar() -> Element {
   let user = cookie_parser();
   let mut show_dialog = use_context::<Signal<FormDialog>>();
   let mut show_side = use_context::<Signal<ShowSide>>();
+  let router = use_navigator();
 
   rsx! {
     div {
@@ -30,7 +33,13 @@ pub fn NavBar() -> Element {
       nav { class: "relative flex h-[5.7rem] p-3 items-center justify-between w-full",
         div {
           if let Some(user) = user {
-            p { class: "text-[#333333] font-bold text-[2.8rem]", "Hey, {user.username}!" }
+            p {
+              onclick: move |_| {
+                  router.push(Route::Home {});
+              },
+              class: "text-[#333333] font-bold text-[2.8rem] cursor-pointer",
+              "Hey, {user.username}!"
+            }
           } else {
             p { class: "text-[#333333] font-bold text-[2.8rem]", "Welcome, Guest" }
           }

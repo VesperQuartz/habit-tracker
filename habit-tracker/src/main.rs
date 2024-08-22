@@ -8,7 +8,9 @@ use components::layout::RootLayout;
 use dioxus::prelude::*;
 use dioxus_logger::tracing::{info, Level};
 use routes::signup::Register;
-use routes::{dashboard::Dashboard, login::Login};
+use routes::{
+  daily_habit::DailyHabit, dashboard::Dashboard, login::Login, weekly_habit::WeeklyHabit,
+};
 use services::is_logged_in;
 const STYLE: &str = asset!("./assets/tailwind.css");
 
@@ -18,6 +20,10 @@ enum Route {
 	#[layout(RootLayout)]
 		#[route("/")]
 		Home {},
+		#[route("/habit/daily")]
+		DailyHabit {},
+		#[route("/habit/weekly")]
+		WeeklyHabit {},
 	#[end_layout]
   #[route("/login")]
   Login {},
