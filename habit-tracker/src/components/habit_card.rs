@@ -1,5 +1,4 @@
 use dioxus::prelude::*;
-use dioxus_logger::tracing::info;
 
 #[derive(PartialEq, Clone, Props, Debug)]
 pub struct CardProps {

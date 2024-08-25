@@ -1,8 +1,8 @@
 use gloo_storage::{LocalStorage, Storage};
 
 use crate::types::{
-  AuthLoginResponse, AuthRegResponse, AuthRequest, Count, Habit, HabitResponse, HabitTask,
-  HabitTiny, Logs, Message, Title, User, UserLoginRes,
+  AuthLoginResponse, AuthRegResponse, AuthRequest, Count, Habit, HabitResponse, HabitSmall,
+  HabitTask, HabitTiny, LogMessage, Logs, Message, Title, User, UserLoginRes,
 };
 
 const BASE_URL: &str = "https://api.habittracker.ignorelist.com";
@@ -58,6 +58,28 @@ pub async fn add_habit(payload: Habit) -> anyhow::Result<HabitTiny> {
     .await?;
   let response = habit.json::<HabitTiny>().await?;
   Ok(response)
+}
+
+pub async fn mark_habit_done(payload: Logs) -> anyhow::Result<LogMessage> {
+  let url = format!("{}/habit/log/daily", BASE_URL);
+  let response = reqwest::Client::new()
+    .post(&url)
+    .json(&payload)
+    .send()
+    .await?;
+  let done_response = response.json::<LogMessage>().await?;
+  Ok(done_response)
+}
+
+pub async fn mark_habit_done_weekly(payload: Logs) -> anyhow::Result<LogMessage> {
+  let url = format!("{}/habit/log/weekly", BASE_URL);
+  let response = reqwest::Client::new()
+    .post(&url)
+    .json(&payload)
+    .send()
+    .await?;
+  let done_response = response.json::<LogMessage>().await?;
+  Ok(done_response)
 }
 
 pub async fn get_habit(id: String) -> anyhow::Result<HabitResponse> {
@@ -167,4 +189,32 @@ pub async fn set_log_status(logs: Logs) -> anyhow::Result<Message> {
   let logs = reqwest::Client::new().post(&url).json(&logs).send().await?;
   let response = logs.json::<Message>().await?;
   Ok(response)
+}
+
+pub async fn get_daily_habit(id: String) -> anyhow::Result<HabitSmall> {
+  let url = format!("{}/users/habit/daily/{}", BASE_URL, id);
+  let daily_habit = reqwest::Client::new().get(&url).send().await?;
+  match daily_habit.status() {
+    reqwest::StatusCode::OK => {
+      let response = daily_habit.json::<HabitSmall>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
+}
+
+pub async fn get_weekly_habit(id: String) -> anyhow::Result<HabitSmall> {
+  let url = format!("{}/users/habit/weekly/{}", BASE_URL, id);
+  let daily_habit = reqwest::Client::new().get(&url).send().await?;
+  match daily_habit.status() {
+    reqwest::StatusCode::OK => {
+      let response = daily_habit.json::<HabitSmall>().await?;
+      Ok(response)
+    }
+    _ => {
+      panic!("something went wrong!");
+    }
+  }
 }

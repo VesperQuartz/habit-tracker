@@ -126,9 +126,10 @@ const habit: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
             id,
           },
         });
-        return { message: "Task deleted sucessfully!" };
+        return { message: "Habit deleted sucessfully!" };
       } catch (error) {
-        console.error(error);
+        fastify.log.error(error);
+        throw new Error("Failed to delete habit");
       }
     },
   });

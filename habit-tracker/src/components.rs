@@ -1,4 +1,5 @@
-pub mod accordion;
+pub mod accordion_daily;
+pub mod accordion_weekly;
 pub mod avatar;
 pub mod button;
 pub mod habit_card;

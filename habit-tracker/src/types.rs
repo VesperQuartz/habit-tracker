@@ -17,6 +17,11 @@ pub struct Message {
 }
 
 #[derive(Deserialize, Serialize, Debug)]
+pub struct Success {
+  pub success: String,
+}
+
+#[derive(Deserialize, Serialize, Debug)]
 pub struct AuthRequest {
   pub username: String,
   pub password: String,
@@ -79,19 +84,24 @@ pub struct Habit {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct HabitTiny {
-  id: String,
+  pub id: String,
   #[serde(rename = "userId")]
-  user_id: String,
-  name: String,
-  description: String,
+  pub user_id: String,
+  pub name: String,
+  pub description: Option<String>,
   #[serde(rename = "startDate")]
-  start_date: DateTime<Utc>,
-  frequency: String,
+  pub start_date: DateTime<Utc>,
+  pub frequency: String,
   #[serde(rename = "createdAt")]
-  created_at: DateTime<Utc>,
+  pub created_at: DateTime<Utc>,
   #[serde(rename = "updatedAt")]
-  updated_at: DateTime<Utc>,
-  message: Option<String>,
+  pub updated_at: DateTime<Utc>,
+  pub message: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct HabitSmall {
+  pub habits: Vec<HabitTiny>,
 }
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -120,9 +130,24 @@ struct Log {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Logs {
   #[serde(rename = "habitId")]
-  habit_id: String,
-  date: String,
-  status: String,
+  pub habit_id: String,
+  pub date: String,
+  pub status: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct LogsError {
+  pub message: String,
+  pub error: String,
+  #[serde(rename = "statusCode")]
+  pub status_code: i32,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+#[serde(untagged)]
+pub enum LogMessage {
+  Yes(Success),
+  No(LogsError),
 }
 
 #[derive(Serialize, Deserialize, Debug)]

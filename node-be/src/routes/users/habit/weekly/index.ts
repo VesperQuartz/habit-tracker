@@ -34,6 +34,9 @@ const userHabit: FastifyPluginAsyncZod = async (
                   equals: "Weekly",
                 },
               },
+              orderBy: {
+                createdAt: "desc",
+              },
             },
           },
         });

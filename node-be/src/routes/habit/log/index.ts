@@ -6,7 +6,7 @@ import { HabitLogWDSchema } from "../schema";
 const log: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
   fastify.route({
     method: "POST",
-    url: "/",
+    url: "/daily",
     schema: {
       tags: ["Logs"],
       body: z.object({
@@ -16,31 +16,88 @@ const log: FastifyPluginAsyncZod = async (fastify, _opts): Promise<void> => {
       }),
       response: {
         200: z.object({
-          message: z.string(),
+          success: z.string(),
         }),
       },
     },
     handler: async (req) => {
       const { habitId, date, status } = req.body;
       try {
+        const normalizedDate = startOfDay(date);
+
         const existingLog = await fastify.prisma.habitLog.findFirst({
           where: {
             habitId: habitId,
-            date: date,
+            date: normalizedDate,
           },
         });
+
         fastify.log.info(`is existing: ${existingLog}`);
+
         if (!existingLog) {
           await fastify.prisma.habitLog.create({
             data: {
               habitId,
-              date,
+              date: normalizedDate,
               status,
             },
           });
-          return { message: "Log created successfully!!!" };
+          return { success: "Log created successfully!!!" };
         } else {
-          throw new Error("Log already exists!!");
+          throw new Error("Log already exists for this day!!");
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          throw new Error(error.message);
+        }
+        throw new Error("something went wrong");
+      }
+    },
+  });
+  fastify.route({
+    method: "POST",
+    url: "/weekly",
+    schema: {
+      tags: ["Logs"],
+      body: z.object({
+        habitId: z.string(),
+        date: z.coerce.date(),
+        status: z.enum(["Done", "Missed", "Pending"]),
+      }),
+      response: {
+        200: z.object({
+          success: z.string(),
+        }),
+      },
+    },
+    handler: async (req) => {
+      const { habitId, date, status } = req.body;
+      try {
+        // Normalize the date to the start of the week (Monday by default)
+        const normalizedDate = startOfWeek(date, { weekStartsOn: 1 }); // Assuming the week starts on Monday
+
+        // Check if a log already exists for the habit in the given week
+        const existingLog = await fastify.prisma.habitLog.findFirst({
+          where: {
+            habitId: habitId,
+            date: normalizedDate,
+          },
+        });
+
+        fastify.log.info(`is existing: ${existingLog}`);
+
+        if (!existingLog) {
+          // Create a new log entry
+          await fastify.prisma.habitLog.create({
+            data: {
+              habitId,
+              date: normalizedDate, // Save the normalized date (start of the week)
+              status,
+            },
+          });
+          return { success: "Weekly log created successfully!!!" };
+        } else {
+          throw new Error("Log already exists for this week!!");
         }
       } catch (error) {
         if (error instanceof Error) {

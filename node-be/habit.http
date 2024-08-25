@@ -1,4 +1,5 @@
 # signup user
+
 POST http://127.0.0.1:4000/auth/signup
 Content-Type: application/json
 
@@ -8,6 +9,7 @@ Content-Type: application/json
 }
 
 # user signin
+
 POST http://127.0.0.1:4000/auth/login
 Content-Type: application/json
 
@@ -16,14 +18,17 @@ Content-Type: application/json
   "password": "123456"
 }
 
---{%
-  local body = context.json_decode(context.result.body)
-  context.set_env("username", body.user.username)
-  context.set_env("id", body.user.id)
-  context.set_env("token", body.user.token)
---%}
+# @lang=lua
+---{%
+  local body = vim.json.decode(response.body)
+  vim.fn.set_env("username", body.user.username)
+  vim.fn.set_env("id", body.user.id)
+  vim.fn.set_env("token", body.user.token)
+---%}
 
+###
 # user add habit
+
 POST http://127.0.0.1:4000/habit
 Content-Type: application/json
 
@@ -37,11 +42,13 @@ Content-Type: application/json
 
 # user get habit
 # the id is the habit id
+
 GET http://127.0.0.1:4000/habit/cm03t1jol0001kxuur8medx1h
 Content-Type: application/json
 
-# user Patch habit habit - Habit name
-# the id is the habit id
+### user Patch habit habit - Habit name
+### the id is the habit id
+
 PATCH http://127.0.0.1:4000/habit/cm03t1jol0001kxuur8medx1h
 Content-Type: application/json
 
@@ -51,52 +58,72 @@ Content-Type: application/json
 
 # user Patch habit habit - Habit name
 # the id is the habit id
-DELETE http://127.0.0.1:4000/habit/cm03t1jol0001kxuur8medx1h
+
+DELETE http://127.0.0.1:4000/habit/cm04mx5eu000119a7g7xs16r7
 Content-Type: application/json
 
-# user add habit logs
+### user add habit logs
 # the id is the habit id
-POST http://127.0.0.1:4000/habit/log
+
+POST http://127.0.0.1:4000/habit/log/daily
 Content-Type: application/json
 
 {
-  "date": "2024-08-21T12:01:10Z",
+  "date": "2024-08-25T20:35:38Z",
   "habitId": "clziuxbma00011r8480cn5ajq",
   "status": "Done"
 }
 
+### user add habit logs weekly
+# the id is the habit id
+
+POST http://127.0.0.1:4000/habit/log/weekly
+Content-Type: application/json
+
+{
+  "date": "2024-08-25T20:35:38Z",
+  "habitId": "clziuxbma00011r8480cn5ajq",
+  "status": "Done"
+}
+
+
 # user all info on user
 # the id is the user id
+
 GET http://127.0.0.1:4000/users/{{id}}
 Content-Type: application/json
 
-# Get user daily habit
+### Get user daily habit
 # the id is the user id
+
 GET http://127.0.0.1:4000/users/habit/daily/{{id}}
 Content-Type: application/json
 
-# Get user daily habit count
+### Get user daily habit count
 # the id is the user id
+
 GET http://127.0.0.1:4000/users/habit/daily/{{id}}/count
 Content-Type: application/json
 
-# Get user weekly habit
+### Get user weekly habit
 # the id is the user id
+
 GET http://127.0.0.1:4000/users/habit/weekly/{{id}}
 Content-Type: application/json
 
-# Get user weekly habit count
+### Get user weekly habit count
 # the id is the user id
+
 GET http://127.0.0.1:4000/users/habit/weekly/{{id}}/count
 Content-Type: application/json
 
-# Get user Daily logs
+### Get user Daily logs
 # the id is the user id
 
 GET http://127.0.0.1:4000/habit/log/{{id}}/daily
 Content-Type: application/json
 
-# Get user Daily logs
+### Get user Daily logs
 # the id is the user id
 
 GET http://127.0.0.1:4000/habit/log/{{id}}/weekly

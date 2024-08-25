@@ -47,6 +47,7 @@ pub fn HabitForm() -> Element {
                             r#"showDXToast("Habit", "Habit is Added Sucessfully", "info", 5000);"#,
                         );
                         loading.set(false);
+                        eval(r#"location.reload()"#);
                     }
                     Err(err) => {
                         info!("err: {:?}", err);
