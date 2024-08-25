@@ -2,7 +2,9 @@
 
 
 https://github.com/user-attachments/assets/8443a79d-ca15-4cac-9e81-efdc4e03e986
-
+> [!IMPORTANT]
+>
+> If the video shows error use a chromium based browser.
 
 # Link
 
